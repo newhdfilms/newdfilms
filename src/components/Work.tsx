@@ -300,7 +300,7 @@ export function TeamCarousels() {
             </div>
             <div id="spencers-reels" className="scroll-mt-24">
                 <VideoCarousel
-                    title="SPENCER'S CREATIONS"
+                    title="NARRATIVE ARCHITECT"
                     subtitle="Narrative & Commercial"
                     videos={spencersCreations}
                 />

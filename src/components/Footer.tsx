@@ -70,14 +70,8 @@ export default function Footer() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12 pt-32 mt-32 border-t border-white/10">
-                        <div className="text-center md:text-left">
-                            <p className="text-white/20 text-[10px] font-bold tracking-widest uppercase">© 2024 NEWHDFILMS STUDIO. ALL RIGHTS RESERVED.</p>
-                        </div>
-                        <div className="text-center md:text-right flex gap-8 justify-center md:justify-end">
-                            <a className="text-white/40 hover:text-primary transition-colors text-[10px] font-bold uppercase tracking-widest" href="#">Privacy Policy</a>
-                            <a className="text-white/40 hover:text-primary transition-colors text-[10px] font-bold uppercase tracking-widest" href="#">Terms of Service</a>
-                        </div>
+                    <div className="pt-32 mt-32 border-t border-white/10 text-center">
+                        <p className="text-white/20 text-[10px] font-bold tracking-widest uppercase">© 2024 NEWHDFILMS STUDIO. ALL RIGHTS RESERVED.</p>
                     </div>
                 </div>
             </div>

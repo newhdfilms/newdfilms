@@ -55,17 +55,19 @@ export default function Navbar() {
 
             {/* Nav Links - STICKY, stays at top */}
             <nav className={`sticky top-0 z-50 flex flex-wrap justify-center gap-8 md:gap-14 text-[11px] font-bold uppercase tracking-[0.4em] py-4 transition-all duration-500 ${scrolled
-                    ? 'bg-background-dark/90 backdrop-blur-xl border-b border-white/5 shadow-[0_10px_40px_rgba(0,0,0,0.5)]'
-                    : 'bg-transparent'
+                ? 'bg-background-dark/90 backdrop-blur-xl border-b border-white/5 shadow-[0_10px_40px_rgba(0,0,0,0.5)]'
+                : 'bg-transparent'
                 }`}>
                 {[
+                    { id: 'hero', label: 'HOME' },
                     { id: 'team', label: 'THE TEAM' },
                     { id: 'engine', label: 'THE ENGINE' },
                     { id: 'work', label: 'THE WORK' },
+                    { id: 'contact', label: 'THE COMPANY' },
                     { id: 'contact', label: 'START PROJECT' }
-                ].map((item) => (
+                ].map((item, index) => (
                     <button
-                        key={item.id}
+                        key={`${item.id}-${index}`}
                         onClick={() => scrollToSection(item.id)}
                         className={`transition-all duration-500 relative group ${activeSegment === item.id ? 'text-primary' : 'text-white/40 hover:text-white'
                             }`}

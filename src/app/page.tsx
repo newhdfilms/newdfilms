@@ -1,8 +1,7 @@
-import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import Team from "@/components/Team";
 import Engine from "@/components/Engine";
-import Work from "@/components/Work";
+import { AiCreationsCarousel, TeamCarousels } from "@/components/Work";
+import Team from "@/components/Team";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -20,9 +19,10 @@ export default function Home() {
 
       <main className="container mx-auto px-6 relative">
         <Hero />
-        <Team />
         <Engine />
-        <Work />
+        <AiCreationsCarousel />
+        <Team />
+        <TeamCarousels />
       </main>
 
       <Footer />

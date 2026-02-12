@@ -210,7 +210,7 @@ function VideoCarousel({ title, subtitle, videos }: CarouselProps) {
     );
 }
 
-export default function Work() {
+export function AiCreationsCarousel() {
     const aiCreations: Video[] = [
         { id: "1", title: "Conduit Collective Reel", videoId: "qMrQIKzTXWM", platform: 'youtube' },
         { id: "2", title: "Save the Robots", videoId: "Fa_qozZo8QU", platform: 'youtube' },
@@ -223,6 +223,18 @@ export default function Work() {
         { id: "9", title: "Clean Air Project", videoId: "03kmgB702wk", platform: 'youtube' },
     ];
 
+    return (
+        <section id="work" className="scroll-mt-48 mb-24">
+            <VideoCarousel
+                title="SYNTHETIC PRODUCTIONS"
+                subtitle="AI Creations"
+                videos={aiCreations}
+            />
+        </section>
+    );
+}
+
+export function TeamCarousels() {
     const adamsReels: Video[] = [
         { id: "10", title: "Online Editor Reel", videoId: "xi97axuLfBE", platform: 'youtube' },
         { id: "11", title: "Offline Editor Reel", videoId: "w9zQz425QfQ", platform: 'youtube' },
@@ -271,12 +283,7 @@ export default function Work() {
     ];
 
     return (
-        <section id="work" className="scroll-mt-48 mb-60">
-            <VideoCarousel
-                title="SYNTHETIC PRODUCTIONS"
-                subtitle="AI Creations"
-                videos={aiCreations}
-            />
+        <section className="scroll-mt-48 mb-60">
             <VideoCarousel
                 title="ADAM'S REELS"
                 subtitle="Editorial & Brand"

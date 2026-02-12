@@ -284,26 +284,34 @@ export function TeamCarousels() {
 
     return (
         <section className="scroll-mt-48 mb-60">
-            <VideoCarousel
-                title="ADAM'S REELS"
-                subtitle="Editorial & Brand"
-                videos={adamsReels}
-            />
-            <VideoCarousel
-                title="MARC'S MASTERS"
-                subtitle="Color & Compositing"
-                videos={marcsWork}
-            />
-            <VideoCarousel
-                title="SPENCER'S CREATIONS"
-                subtitle="Narrative & Commercial"
-                videos={spencersCreations}
-            />
-            <VideoCarousel
-                title="GOBI'S VISION"
-                subtitle="Production & Direction"
-                videos={gobisWork}
-            />
+            <div id="adams-reels" className="scroll-mt-24">
+                <VideoCarousel
+                    title="ADAM'S REELS"
+                    subtitle="Editorial & Brand"
+                    videos={adamsReels}
+                />
+            </div>
+            <div id="marcs-reels" className="scroll-mt-24">
+                <VideoCarousel
+                    title="MARC'S MASTERS"
+                    subtitle="Color & Compositing"
+                    videos={marcsWork}
+                />
+            </div>
+            <div id="spencers-reels" className="scroll-mt-24">
+                <VideoCarousel
+                    title="SPENCER'S CREATIONS"
+                    subtitle="Narrative & Commercial"
+                    videos={spencersCreations}
+                />
+            </div>
+            <div id="gobis-reels" className="scroll-mt-24">
+                <VideoCarousel
+                    title="GOBI'S VISION"
+                    subtitle="Production & Direction"
+                    videos={gobisWork}
+                />
+            </div>
         </section>
     );
 }

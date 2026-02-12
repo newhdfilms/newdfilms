@@ -1,3 +1,5 @@
+"use client";
+
 export default function Team() {
     const members = [
         {
@@ -5,37 +7,51 @@ export default function Team() {
             role: "Founder & AI Creative",
             specialization: "Specialization: AI Workflow",
             bio: "Over 20 years in film and digital media, producing for Disney, Marvel, and NBCUniversal. Currently evolving post-production with AI integration.",
-            image: "/adam.png"
+            image: "/adam.png",
+            reelId: "adams-reels"
         },
         {
             name: "Marc Fisher",
             role: "Colorist & Compositor",
             specialization: "Master of Visual Depth",
             bio: "A passionate creative combining strategic thinking with expert execution in Color, Editorial, and VFX. Delivering exceptional digital experiences at the intersection of technology and innovation.",
-            image: "/Marc.png"
+            image: "/Marc.png",
+            reelId: "marcs-reels"
         },
         {
             name: "Gobi M. Rahimi",
             role: "Producer & Director",
             specialization: "Executive Visionary",
             bio: "Commercial and branded content producer/director with an eye for innovation, providing agile and cost-effective production solutions.",
-            image: "/Gobi.webp"
+            image: "/Gobi.webp",
+            reelId: "gobis-reels"
         },
         {
             name: "Bob Grey",
             role: "Sound Designer & Mixer",
             specialization: "Sonic Landscapes Specialist",
             bio: "VP of Post Production since 2007. Expert in re-recording mixing, facility design, and delivering award-winning audio under pressure for major studios.",
-            image: "/Bob.jpg"
+            image: "/Bob.jpg",
+            reelId: null
         },
         {
             name: "Spencer Hill",
             role: "Creative Editor",
             specialization: "Narrative Architect",
             bio: "Award-winning lead video editor-producer with expertise in over 250 theatrical campaigns. Specializes in impactful storytelling for film, branding, and AI creation.",
-            image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=1000"
+            image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=1000",
+            reelId: "spencers-reels"
         }
     ];
+
+    const scrollToReel = (reelId: string) => {
+        const element = document.getElementById(reelId);
+        if (element) {
+            const yOffset = -80;
+            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: "smooth" });
+        }
+    };
 
     return (
         <section id="team" className="scroll-mt-48 mb-60">
@@ -51,7 +67,11 @@ export default function Team() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 px-6">
                 {members.map((member, index) => (
-                    <div key={index} className="team-card group cursor-pointer">
+                    <div
+                        key={index}
+                        className="team-card group cursor-pointer"
+                        onClick={() => member.reelId && scrollToReel(member.reelId)}
+                    >
                         <div className="relative overflow-hidden rounded-2xl aspect-[4/5] mb-6 bg-black/50 border border-white/10 group-hover:border-primary/50 transition-colors duration-500">
                             {/* Image with filters */}
                             <img
@@ -78,6 +98,17 @@ export default function Team() {
                                     <p className="text-white/60 text-xs leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200 line-clamp-3">
                                         {member.bio}
                                     </p>
+                                    {member.reelId && (
+                                        <button
+                                            className="mt-2 px-5 py-2 border border-primary/60 text-primary text-[10px] font-bold tracking-[0.2em] uppercase rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-500 delay-300 hover:bg-primary hover:text-background-dark"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                scrollToReel(member.reelId!);
+                                            }}
+                                        >
+                                            View My Work
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>

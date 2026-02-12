@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-primary: #f49d25;
+  --color-background-light: #f8f7f5;
+  --color-background-dark: #12110c;
+  --color-teal-depth: #0d2d2d;
+  --color-card-bg: rgba(13, 25, 25, 0.4);
+
+  --font-display: var(--font-space-grotesk), "Space Grotesk", sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    background-color: #12110c;
+    color: white;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.glass-card {
+  background: rgba(13, 25, 25, 0.3);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glow-hover:hover {
+  box-shadow: 0 0 20px rgba(244, 157, 37, 0.4);
+}
+
+.video-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  filter: brightness(0.3) contrast(1.1);
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.horizontal-scroll::-webkit-scrollbar-thumb {
+  background: #f49d25;
+  border-radius: 10px;
+}
+
+.text-glow {
+  text-shadow: 0 0 15px rgba(244, 157, 37, 0.3);
 }

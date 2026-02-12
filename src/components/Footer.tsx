@@ -32,9 +32,12 @@ export default function Footer() {
                                     <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-3" htmlFor="message">Message</label>
                                     <textarea className="w-full bg-white/5 border-white/10 rounded-lg py-4 px-5 focus:outline-none focus:ring-1 focus:ring-primary transition-all text-white" id="message" placeholder="Tell us about your vision..." rows={4}></textarea>
                                 </div>
-                                <button className="w-full bg-primary text-background-dark font-bold py-5 rounded-lg hover:brightness-110 transition-all uppercase tracking-[0.2em] text-sm" type="submit">
+                                <a
+                                    href="mailto:HELLO@NEWHDFILMS.COM?subject=New%20Project%20Inquiry"
+                                    className="w-full bg-primary text-background-dark font-bold py-5 rounded-lg hover:brightness-110 transition-all uppercase tracking-[0.2em] text-sm block text-center"
+                                >
                                     Start Project
-                                </button>
+                                </a>
                             </form>
                         </div>
 

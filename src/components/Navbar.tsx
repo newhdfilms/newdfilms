@@ -4,15 +4,18 @@ import { useEffect, useState } from "react";
 
 export default function Navbar() {
     const [activeSegment, setActiveSegment] = useState("");
+    const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
+            // Track scroll position for logo hide
+            setScrolled(window.scrollY > 120);
+
             const sections = ["hero", "team", "engine", "work", "contact"];
             const current = sections.find(section => {
                 const element = document.getElementById(section);
                 if (element) {
                     const rect = element.getBoundingClientRect();
-                    // Detect when section is in view (centered or near top)
                     return rect.top >= -200 && rect.top <= 300;
                 }
                 return false;
@@ -21,7 +24,6 @@ export default function Navbar() {
         };
 
         window.addEventListener("scroll", handleScroll);
-        // Trigger once on mount
         handleScroll();
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
@@ -29,28 +31,33 @@ export default function Navbar() {
     const scrollToSection = (id: string) => {
         const element = document.getElementById(id);
         if (element) {
-            const yOffset = -120; // Account for the sticky header
+            const yOffset = -80;
             const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
             window.scrollTo({ top: y, behavior: "smooth" });
         }
     };
 
     return (
-        <header className="sticky top-0 left-0 w-full z-50 pt-10 pb-16 flex flex-col items-center bg-transparent pointer-events-none">
-            {/* Title Box - Matches the High-Impact "Paper Tiger" Style */}
-            <div
-                className="glass-card px-10 py-5 rounded-xl mb-8 border-white/10 pointer-events-auto cursor-pointer group transition-all duration-500 hover:shadow-[0_0_30px_rgba(244,157,37,0.2)]"
-                onClick={() => scrollToSection('hero')}
-            >
-                <h1 className="text-3xl md:text-4xl font-bold tracking-[0.1em] flex items-center gap-3">
-                    <span className="text-primary group-hover:text-white transition-colors">NEW</span>
-                    <span className="text-white">HD</span>
-                    <span className="text-primary group-hover:text-white transition-colors">FILMS</span>
-                </h1>
+        <>
+            {/* Logo - scrolls with the page, NOT sticky */}
+            <div className="w-full flex justify-center pt-10 pb-6 bg-transparent z-40 relative">
+                <div
+                    className="glass-card px-10 py-5 rounded-xl border-white/10 cursor-pointer group transition-all duration-500 hover:shadow-[0_0_30px_rgba(244,157,37,0.2)]"
+                    onClick={() => scrollToSection('hero')}
+                >
+                    <h1 className="text-3xl md:text-4xl font-bold tracking-[0.1em] flex items-center gap-3">
+                        <span className="text-primary group-hover:text-white transition-colors">NEW</span>
+                        <span className="text-white">HD</span>
+                        <span className="text-primary group-hover:text-white transition-colors">FILMS</span>
+                    </h1>
+                </div>
             </div>
 
-            {/* Navigation Links */}
-            <nav className="flex flex-wrap justify-center gap-8 md:gap-14 text-[11px] font-bold uppercase tracking-[0.4em] pointer-events-auto">
+            {/* Nav Links - STICKY, stays at top */}
+            <nav className={`sticky top-0 z-50 flex flex-wrap justify-center gap-8 md:gap-14 text-[11px] font-bold uppercase tracking-[0.4em] py-4 transition-all duration-500 ${scrolled
+                    ? 'bg-background-dark/90 backdrop-blur-xl border-b border-white/5 shadow-[0_10px_40px_rgba(0,0,0,0.5)]'
+                    : 'bg-transparent'
+                }`}>
                 {[
                     { id: 'team', label: 'THE TEAM' },
                     { id: 'engine', label: 'THE ENGINE' },
@@ -69,6 +76,6 @@ export default function Navbar() {
                     </button>
                 ))}
             </nav>
-        </header>
+        </>
     );
 }

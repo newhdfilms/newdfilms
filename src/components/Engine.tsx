@@ -4,56 +4,84 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 const PHASES = [
     {
-        id: "spark",
+        id: "ignition",
         number: "01",
-        label: "SPARK",
-        subtitle: "IDEATION CORE",
-        icon: "bolt",
-        color: "primary",
+        label: "IGNITION",
+        subtitle: "CLIENT ACTIVATION",
+        icon: "local_fire_department",
+        color: "#f49d25",
         description:
-            "The ignition point where proprietary LLMs stress-test creative concepts. Thousands of mood-boards generated in seconds to find the perfect cinematic DNA.",
+            "The moment you reach out and turn the key. You bring the vision — we bring the horsepower. This is where it all begins: your project fires up and our engine starts to roar.",
         items: [
-            { title: "Concept development & scriptwriting", sub: "Ideation to narrative blueprint" },
-            { title: "Visual Moodboarding", sub: "Aesthetic direction & tone" },
+            { title: "Client onboarding & discovery", sub: "Vision alignment session" },
+            { title: "Project scope & roadmap", sub: "Strategic ignition sequence" },
         ],
     },
     {
-        id: "craft",
+        id: "spark",
         number: "02",
-        label: "CRAFT",
-        subtitle: "NEURAL PIPELINE",
-        icon: "brush",
-        color: "teal",
+        label: "SPARK",
+        subtitle: "CREATIVE IGNITION",
+        icon: "bolt",
+        color: "#f49d25",
         description:
-            "Precision prompting meets neural style transfer. Every frame is hand-refined by our elite artists to ensure AI output possesses a true cinematic soul.",
+            "The creative ideas, plans, and possibilities are shared. Proprietary LLMs stress-test concepts, generating thousands of mood-boards in seconds to find the perfect cinematic DNA.",
         items: [
-            { title: "AI-assisted production design", sub: "Neural rendering pipeline" },
-            { title: "Style transfer & refinement", sub: "Artist-guided corrections" },
+            { title: "Concept development & ideation", sub: "Creative exploration burst" },
+            { title: "Visual moodboarding & tone", sub: "Aesthetic direction lock" },
         ],
     },
     {
         id: "forge",
         number: "03",
         label: "FORGE",
-        subtitle: "8K SYNTHESIS",
+        subtitle: "AI DEEP ANALYSIS",
         icon: "precision_manufacturing",
-        color: "teal",
+        color: "#00ffd9",
         description:
-            "High-density rendering and custom upscaling algorithms. We bake raw generated pixels into master-ready deliverables for theatrical exhibition.",
+            "Everything is placed into our AI Forge — analyzed to its DNA with high heat, melted down to fully understand all parts. Human-AI accelerated teams break every element apart and rebuild with precision.",
         items: [
-            { title: "High-density rendering", sub: "Custom upscaling algorithms" },
-            { title: "Master-ready deliverables", sub: "Theatrical exhibition grade" },
+            { title: "DNA-level content analysis", sub: "AI + human deep decomposition" },
+            { title: "High-heat stress testing", sub: "Precision forge refinement" },
+        ],
+    },
+    {
+        id: "craft",
+        number: "04",
+        label: "CRAFT",
+        subtitle: "NEURAL ASSEMBLY",
+        icon: "brush",
+        color: "#00ffd9",
+        description:
+            "Takes all elements from the Forge combined with the Spark and builds everything needed. Every frame hand-refined by elite artists to ensure AI output possesses a true cinematic soul.",
+        items: [
+            { title: "AI-assisted production design", sub: "Neural rendering pipeline" },
+            { title: "Style transfer & assembly", sub: "Artist-guided mastering" },
+        ],
+    },
+    {
+        id: "dashboard",
+        number: "05",
+        label: "DASHBOARD",
+        subtitle: "REVIEW & CONTROL",
+        icon: "dashboard",
+        color: "#f49d25",
+        description:
+            "The dashboard lights up — clients and teams review as gears shift into drive. If the wrong lights flash, we address it. Every indicator green means clear for launch.",
+        items: [
+            { title: "Client review & approval", sub: "Real-time status dashboard" },
+            { title: "Quality control checkpoints", sub: "Green-light verification" },
         ],
     },
     {
         id: "launch",
-        number: "04",
+        number: "06",
         label: "LAUNCH",
         subtitle: "DEPLOYMENT",
         icon: "rocket_launch",
-        color: "primary",
+        color: "#f49d25",
         description:
-            "Seamless deployment across spatial computing, streaming platforms, and IMAX screens. Optimized for the next generation of viewership.",
+            "All systems go. The project launches across spatial computing, streaming platforms, and screens worldwide. You're in the driver's seat — we built the engine that gets you there faster than ever before.",
         items: [
             { title: "Multi-platform deployment", sub: "Streaming, IMAX, spatial" },
             { title: "Next-gen optimization", sub: "Future-ready delivery" },
@@ -65,37 +93,263 @@ export default function Engine() {
     const sectionRef = useRef<HTMLDivElement>(null);
     const [scrollProgress, setScrollProgress] = useState(0);
     const [activePhaseIndex, setActivePhaseIndex] = useState(0);
-    const [phaseProgress, setPhaseProgress] = useState(0);
+    const [, setPhaseProgress] = useState(0);
+    const [exitProgress, setExitProgress] = useState(0); // 0 = locked/visible, 1 = fully slid out
 
-    const handleScroll = useCallback(() => {
-        if (!sectionRef.current) return;
-        const rect = sectionRef.current.getBoundingClientRect();
-        const sectionHeight = sectionRef.current.offsetHeight;
-        const viewportHeight = window.innerHeight;
+    // Scroll-lock state
+    const isLockedRef = useRef(false);
+    const virtualProgressRef = useRef(0);
+    const hasCompletedRef = useRef(false);
+    const hasEnteredRef = useRef(false);
 
-        // Calculate how far we've scrolled through the section
-        // Start tracking when top edge enters bottom of viewport
-        // End tracking when bottom edge exits top of viewport
-        const totalScrollDistance = sectionHeight + viewportHeight;
-        const scrolled = viewportHeight - rect.top;
-        const progress = Math.max(0, Math.min(1, scrolled / totalScrollDistance));
-
+    // Helper to update phase state from a progress value
+    const updateFromProgress = useCallback((progress: number) => {
         setScrollProgress(progress);
-
-        // Map progress to phases (4 phases, evenly distributed)
-        const phaseFloat = progress * 4;
-        const idx = Math.min(3, Math.floor(phaseFloat));
+        const phaseCount = PHASES.length;
+        const phaseFloat = progress * phaseCount;
+        const idx = Math.min(phaseCount - 1, Math.floor(phaseFloat));
         const pProgress = phaseFloat - idx;
-
         setActivePhaseIndex(idx);
         setPhaseProgress(Math.min(1, pProgress));
     }, []);
 
+    // Scroll-lock: intercept wheel events
     useEffect(() => {
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        handleScroll();
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, [handleScroll]);
+        const section = sectionRef.current;
+        if (!section) return;
+
+        const handleWheel = (e: WheelEvent) => {
+            const rect = section.getBoundingClientRect();
+            const vh = window.innerHeight;
+
+            // TRIGGER: Lock when section top is within (navHeight + buffer) of viewport top
+            // so the title text sits comfortably below the nav bar
+            const navHeight = 120;
+            const isAtTop = rect.top <= navHeight + 80 && rect.top > -rect.height;
+            const isInView = rect.top <= navHeight && rect.bottom > 0;
+            const shouldLock = isAtTop || isInView;
+
+            if (!shouldLock) {
+                isLockedRef.current = false;
+                return;
+            }
+
+            const scrollingDown = e.deltaY > 0;
+            const scrollingUp = e.deltaY < 0;
+            const currentProgress = virtualProgressRef.current;
+
+            // If scrolling down and animation not complete, lock and advance
+            if (scrollingDown && currentProgress < 1) {
+                e.preventDefault();
+
+                // Snap the viewport so the title sits below the nav bar
+                if (!hasEnteredRef.current && rect.top > navHeight) {
+                    const sectionTop = window.scrollY + rect.top - navHeight;
+                    window.scrollTo({ top: sectionTop, behavior: 'instant' as ScrollBehavior });
+                }
+
+                isLockedRef.current = true;
+                hasEnteredRef.current = true;
+
+                // Each scroll tick = ~3% progress for responsive feel
+                const increment = Math.abs(e.deltaY) / 2000;
+                const newProgress = Math.min(1, currentProgress + increment);
+                virtualProgressRef.current = newProgress;
+                updateFromProgress(newProgress);
+                setExitProgress(0);
+
+                if (newProgress >= 1) {
+                    hasCompletedRef.current = true;
+                    // Don't unlock yet — let them scroll once more to trigger exit
+                }
+                return;
+            }
+
+            // If at 100% and scrolling down, trigger the exit slide-out
+            if (scrollingDown && currentProgress >= 1) {
+                e.preventDefault();
+                const exitIncrement = Math.abs(e.deltaY) / 1600;
+                setExitProgress(prev => {
+                    const newExit = Math.min(1, prev + exitIncrement);
+                    if (newExit >= 1) {
+                        // Fully exited — unlock scroll and let page continue
+                        isLockedRef.current = false;
+                        hasCompletedRef.current = true;
+
+                        // Smooth-scroll past the section so the user sees AI Creations arrive
+                        const sectionBottom = section.getBoundingClientRect().bottom + window.scrollY;
+                        window.scrollTo({ top: sectionBottom, behavior: 'smooth' });
+                    }
+                    return newExit;
+                });
+                return;
+            }
+
+            // If scrolling up and we've entered the engine, rewind
+            if (scrollingUp && hasEnteredRef.current && (currentProgress > 0 || exitProgress > 0)) {
+                e.preventDefault();
+                isLockedRef.current = true;
+
+                // If exit is happening, rewind exit first
+                if (exitProgress > 0) {
+                    const exitDecrement = Math.abs(e.deltaY) / 1600;
+                    setExitProgress(prev => Math.max(0, prev - exitDecrement));
+                    return;
+                }
+
+                const decrement = Math.abs(e.deltaY) / 2000;
+                const newProgress = Math.max(0, currentProgress - decrement);
+                virtualProgressRef.current = newProgress;
+                updateFromProgress(newProgress);
+
+                if (newProgress <= 0) {
+                    hasCompletedRef.current = false;
+                    isLockedRef.current = false;
+                    hasEnteredRef.current = false;
+                }
+                return;
+            }
+
+            // If at start and scrolling up, allow normal scroll
+            if (scrollingUp && currentProgress <= 0) {
+                isLockedRef.current = false;
+                hasEnteredRef.current = false;
+                return;
+            }
+        };
+
+        window.addEventListener("wheel", handleWheel, { passive: false });
+        return () => window.removeEventListener("wheel", handleWheel);
+    }, [updateFromProgress, exitProgress]);
+
+    // Touch events for mobile scroll-lock
+    useEffect(() => {
+        const section = sectionRef.current;
+        if (!section) return;
+
+        let touchStartY = 0;
+
+        const handleTouchStart = (e: TouchEvent) => {
+            touchStartY = e.touches[0].clientY;
+        };
+
+        const handleTouchMove = (e: TouchEvent) => {
+            const rect = section.getBoundingClientRect();
+            // Match the wheel handler trigger — lock when section is near nav bottom
+            const navHeight = 120;
+            const isAtTop = rect.top <= navHeight + 80 && rect.top > -rect.height;
+            const isInView = rect.top <= navHeight && rect.bottom > 0;
+            const shouldLock = isAtTop || isInView;
+
+            if (!shouldLock) {
+                isLockedRef.current = false;
+                return;
+            }
+
+            const touchY = e.touches[0].clientY;
+            const deltaY = touchStartY - touchY;
+            touchStartY = touchY;
+
+            const scrollingDown = deltaY > 0;
+            const scrollingUp = deltaY < 0;
+            const currentProgress = virtualProgressRef.current;
+
+            if (scrollingDown && currentProgress < 1) {
+                e.preventDefault();
+
+                // Snap so title sits below nav bar
+                if (!hasEnteredRef.current && rect.top > navHeight) {
+                    const sectionTop = window.scrollY + rect.top - navHeight;
+                    window.scrollTo({ top: sectionTop, behavior: 'instant' as ScrollBehavior });
+                }
+
+                isLockedRef.current = true;
+                hasEnteredRef.current = true;
+
+                const increment = Math.abs(deltaY) / 1000;
+                const newProgress = Math.min(1, currentProgress + increment);
+                virtualProgressRef.current = newProgress;
+                updateFromProgress(newProgress);
+                setExitProgress(0);
+
+                if (newProgress >= 1) {
+                    hasCompletedRef.current = true;
+                }
+                return;
+            }
+
+            if (scrollingDown && currentProgress >= 1) {
+                e.preventDefault();
+                const exitIncrement = Math.abs(deltaY) / 800;
+                setExitProgress(prev => {
+                    const newExit = Math.min(1, prev + exitIncrement);
+                    if (newExit >= 1) {
+                        isLockedRef.current = false;
+                        const sectionBottom = section.getBoundingClientRect().bottom + window.scrollY;
+                        window.scrollTo({ top: sectionBottom, behavior: 'smooth' });
+                    }
+                    return newExit;
+                });
+                return;
+            }
+
+            if (scrollingUp && hasEnteredRef.current && currentProgress > 0) {
+                e.preventDefault();
+                isLockedRef.current = true;
+
+                if (exitProgress > 0) {
+                    const exitDecrement = Math.abs(deltaY) / 800;
+                    setExitProgress(prev => Math.max(0, prev - exitDecrement));
+                    return;
+                }
+
+                const decrement = Math.abs(deltaY) / 1000;
+                const newProgress = Math.max(0, currentProgress - decrement);
+                virtualProgressRef.current = newProgress;
+                updateFromProgress(newProgress);
+
+                if (newProgress <= 0) {
+                    hasCompletedRef.current = false;
+                    isLockedRef.current = false;
+                }
+                return;
+            }
+        };
+
+        window.addEventListener("touchstart", handleTouchStart, { passive: true });
+        window.addEventListener("touchmove", handleTouchMove, { passive: false });
+
+        return () => {
+            window.removeEventListener("touchstart", handleTouchStart);
+            window.removeEventListener("touchmove", handleTouchMove);
+        };
+    }, [updateFromProgress, exitProgress]);
+
+    // Reset virtual progress when scrolling away from the section naturally
+    useEffect(() => {
+        const handleNormalScroll = () => {
+            if (!sectionRef.current || isLockedRef.current) return;
+            const rect = sectionRef.current.getBoundingClientRect();
+            const vh = window.innerHeight;
+
+            if (rect.bottom < 0) {
+                virtualProgressRef.current = 1;
+                setScrollProgress(1);
+                setActivePhaseIndex(PHASES.length - 1);
+                setExitProgress(1);
+            } else if (rect.top > vh) {
+                virtualProgressRef.current = 0;
+                hasCompletedRef.current = false;
+                hasEnteredRef.current = false;
+                setScrollProgress(0);
+                setActivePhaseIndex(0);
+                setExitProgress(0);
+            }
+        };
+
+        window.addEventListener("scroll", handleNormalScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleNormalScroll);
+    }, []);
 
     const activePhase = PHASES[activePhaseIndex];
     const corePulse = 0.3 + scrollProgress * 0.7;
@@ -104,17 +358,30 @@ export default function Engine() {
     // Ring rotation angles driven by scroll
     const ring1Angle = scrollProgress * 360 * 3;
     const ring2Angle = scrollProgress * 360 * 2;
-    const ring3Angle = scrollProgress * 360 * 1.5;
+
+    // Engine exhaust/power visual based on progress
+    const enginePower = Math.min(1, scrollProgress * 1.5);
+
+    // Exit animation: slide up and fade out
+    const exitTranslateY = exitProgress * -120; // slides up 120vh worth
+    const exitOpacity = Math.max(0, 1 - exitProgress * 1.5);
+    const exitScale = 1 - exitProgress * 0.05;
 
     return (
         <section
             id="engine"
             ref={sectionRef}
-            className="scroll-mt-48 mb-40 relative py-20 overflow-hidden"
-            style={{ minHeight: "200vh" }}
+            className="scroll-mt-48 relative overflow-hidden"
+            style={{ minHeight: "120vh", marginBottom: 0 }}
         >
             {/* Volumetric atmosphere */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div
+                className="absolute inset-0 pointer-events-none overflow-hidden"
+                style={{
+                    opacity: exitOpacity,
+                    transition: "opacity 0.3s ease-out",
+                }}
+            >
                 <div
                     className="absolute -top-1/4 -left-1/4 w-full h-full transition-opacity duration-1000"
                     style={{
@@ -139,6 +406,10 @@ export default function Engine() {
                     { top: "33%", left: "75%", opacity: 0.3 },
                     { top: "10%", left: "80%", opacity: 0.5 },
                     { top: "90%", left: "10%", opacity: 0.2 },
+                    { top: "15%", left: "50%", opacity: 0.4 },
+                    { top: "65%", left: "15%", opacity: 0.3 },
+                    { top: "45%", left: "85%", opacity: 0.5 },
+                    { top: "80%", left: "45%", opacity: 0.35 },
                 ].map((p, i) => (
                     <div
                         key={i}
@@ -146,10 +417,11 @@ export default function Engine() {
                         style={{
                             top: p.top,
                             left: p.left,
-                            width: 2,
-                            height: 2,
-                            background: "#00ffd9",
-                            boxShadow: "0 0 10px #00ffd9",
+                            width: 2 + enginePower * 2,
+                            height: 2 + enginePower * 2,
+                            borderRadius: "50%",
+                            background: i % 2 === 0 ? "#00ffd9" : "#f49d25",
+                            boxShadow: `0 0 ${6 + enginePower * 10}px ${i % 2 === 0 ? "#00ffd9" : "#f49d25"}`,
                             opacity: p.opacity * scrollProgress,
                             transition: "opacity 0.5s",
                         }}
@@ -157,13 +429,20 @@ export default function Engine() {
                 ))}
             </div>
 
-            {/* Sticky container for the engine visual */}
-            <div className="sticky top-0 min-h-screen flex items-center justify-center z-10">
+            {/* Sticky container — slides out when exit triggers */}
+            <div
+                className="sticky top-0 min-h-screen flex items-center justify-center z-10"
+                style={{
+                    transform: `translateY(${exitTranslateY}px) scale(${exitScale})`,
+                    opacity: exitOpacity,
+                    transition: "transform 0.4s ease-out, opacity 0.4s ease-out",
+                }}
+            >
                 <div className="w-full max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 items-center gap-8 lg:gap-12">
                     {/* Engine Core — left side */}
                     <div className="lg:col-span-7 flex justify-center items-center relative" style={{ perspective: "2000px" }}>
                         <div
-                            className="relative w-[320px] h-[320px] md:w-[460px] md:h-[460px]"
+                            className="relative w-[320px] h-[320px] md:w-[480px] md:h-[480px]"
                             style={{
                                 transformStyle: "preserve-3d",
                                 transform: `rotateX(${8 + scrollProgress * 12}deg) rotateY(${-8 + scrollProgress * -7}deg)`,
@@ -187,7 +466,7 @@ export default function Engine() {
                                 style={{
                                     background:
                                         "conic-gradient(from 180deg at 50% 50%, #1a1a1a 0deg, #4a4a4a 90deg, #1a1a1a 180deg, #4a4a4a 270deg, #1a1a1a 360deg)",
-                                    border: "1px solid rgba(255,255,255,0.2)",
+                                    border: `1px solid rgba(255,255,255,${0.2 + enginePower * 0.15})`,
                                     opacity: 0.8,
                                     transform: `rotate(${ring1Angle}deg)`,
                                     transition: "transform 0.1s linear",
@@ -200,7 +479,7 @@ export default function Engine() {
                                         background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02))",
                                         backdropFilter: "blur(12px)",
                                         border: "1px solid rgba(255,255,255,0.1)",
-                                        boxShadow: "inset 0 0 30px rgba(0, 255, 217, 0.05)",
+                                        boxShadow: `inset 0 0 30px rgba(0, 255, 217, ${0.05 + enginePower * 0.15})`,
                                     }}
                                 >
                                     {/* Animated gradient pulse inside glass */}
@@ -246,12 +525,12 @@ export default function Engine() {
                                 </div>
                             </div>
 
-                            {/* Phase orbit nodes around the engine */}
+                            {/* Phase orbit nodes around the engine — 6 positions */}
                             {PHASES.map((phase, i) => {
                                 const isActive = i === activePhaseIndex;
-                                const angle = -90 + i * 90; // Top, Right, Bottom, Left
+                                const angle = -90 + i * 60;
                                 const rad = (angle * Math.PI) / 180;
-                                const radius = 52; // percentage from center
+                                const radius = 52;
                                 const x = 50 + radius * Math.cos(rad);
                                 const y = 50 + radius * Math.sin(rad);
 
@@ -268,15 +547,15 @@ export default function Engine() {
                                         <div
                                             className="rounded-lg flex flex-col items-center justify-center transition-all duration-500"
                                             style={{
-                                                width: isActive ? 72 : 52,
-                                                height: isActive ? 72 : 52,
+                                                width: isActive ? 68 : 44,
+                                                height: isActive ? 68 : 44,
                                                 background: isActive
                                                     ? "linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.04))"
                                                     : "linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01))",
                                                 backdropFilter: "blur(12px)",
-                                                border: `1px solid ${isActive ? "rgba(244, 157, 37, 0.5)" : "rgba(255,255,255,0.1)"}`,
+                                                border: `1px solid ${isActive ? phase.color : "rgba(255,255,255,0.1)"}`,
                                                 boxShadow: isActive
-                                                    ? "0 0 25px rgba(244, 157, 37, 0.3)"
+                                                    ? `0 0 25px ${phase.color}60`
                                                     : "none",
                                                 opacity: isActive ? 1 : 0.35,
                                                 filter: isActive ? "none" : "grayscale(1)",
@@ -285,17 +564,17 @@ export default function Engine() {
                                             <span
                                                 className="material-symbols-outlined transition-colors duration-500"
                                                 style={{
-                                                    color: isActive ? "#f49d25" : "white",
-                                                    fontSize: isActive ? 20 : 16,
+                                                    color: isActive ? phase.color : "white",
+                                                    fontSize: isActive ? 20 : 14,
                                                 }}
                                             >
                                                 {phase.icon}
                                             </span>
                                         </div>
                                         <span
-                                            className="text-[7px] md:text-[8px] font-bold tracking-widest uppercase transition-all duration-500"
+                                            className="text-[6px] md:text-[8px] font-bold tracking-widest uppercase transition-all duration-500 whitespace-nowrap"
                                             style={{
-                                                color: isActive ? "#f49d25" : "rgba(255,255,255,0.4)",
+                                                color: isActive ? phase.color : "rgba(255,255,255,0.4)",
                                             }}
                                         >
                                             {phase.label}
@@ -306,11 +585,11 @@ export default function Engine() {
 
                             {/* Connection line from active node to panel */}
                             <div
-                                className="absolute top-1/2 -translate-y-1/2 h-[1px] transition-all duration-700"
+                                className="absolute top-1/2 -translate-y-1/2 h-[1px] transition-all duration-700 hidden lg:block"
                                 style={{
                                     right: -80,
                                     width: 80,
-                                    background: `linear-gradient(to right, rgba(244, 157, 37, ${0.6 * scrollProgress}), transparent)`,
+                                    background: `linear-gradient(to right, ${activePhase.color}${Math.round(scrollProgress * 153).toString(16).padStart(2, '0')}, transparent)`,
                                 }}
                             />
                         </div>
@@ -323,16 +602,19 @@ export default function Engine() {
                             style={{
                                 background: "rgba(10, 10, 10, 0.85)",
                                 backdropFilter: "blur(24px)",
-                                borderLeft: "3px solid #f49d25",
-                                boxShadow: "-20px 0 50px rgba(0,0,0,0.5), 0 0 30px rgba(244, 157, 37, 0.1)",
+                                borderLeft: `3px solid ${activePhase.color}`,
+                                boxShadow: `-20px 0 50px rgba(0,0,0,0.5), 0 0 30px ${activePhase.color}20`,
                                 transform: `translateX(${4 + (1 - scrollProgress) * 20}px)`,
                                 opacity: Math.min(1, scrollProgress * 3),
                             }}
                         >
                             {/* Phase indicator */}
                             <div className="mb-6 md:mb-8">
-                                <span className="text-primary text-[10px] font-bold tracking-[0.4em] uppercase mb-2 block">
-                                    Stage {activePhase.number} // Interactive
+                                <span
+                                    className="text-[10px] font-bold tracking-[0.4em] uppercase mb-2 block transition-colors duration-500"
+                                    style={{ color: activePhase.color }}
+                                >
+                                    Stage {activePhase.number} // {activePhase.subtitle}
                                 </span>
                                 <h2
                                     className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-2 transition-all duration-500"
@@ -340,7 +622,10 @@ export default function Engine() {
                                 >
                                     {activePhase.label}
                                 </h2>
-                                <div className="h-[2px] w-20 bg-primary" />
+                                <div
+                                    className="h-[2px] w-20 transition-colors duration-500"
+                                    style={{ background: activePhase.color }}
+                                />
                             </div>
 
                             {/* Description */}
@@ -355,7 +640,7 @@ export default function Engine() {
                                         <span
                                             className="material-symbols-outlined text-sm mt-1"
                                             style={{
-                                                color: idx === 0 ? "#f49d25" : "rgba(255,255,255,0.5)",
+                                                color: idx === 0 ? activePhase.color : "rgba(255,255,255,0.5)",
                                             }}
                                         >
                                             arrow_forward
@@ -364,8 +649,8 @@ export default function Engine() {
                                             <h4
                                                 className="text-lg font-bold"
                                                 style={{
-                                                    color: idx === 0 ? "#f49d25" : "white",
-                                                    textShadow: idx === 0 ? "0 0 10px rgba(244, 157, 37, 0.8), 0 0 20px rgba(244, 157, 37, 0.4)" : "none",
+                                                    color: idx === 0 ? activePhase.color : "white",
+                                                    textShadow: idx === 0 ? `0 0 10px ${activePhase.color}CC, 0 0 20px ${activePhase.color}66` : "none",
                                                 }}
                                             >
                                                 {item.title}
@@ -378,29 +663,41 @@ export default function Engine() {
                                 ))}
                             </div>
 
-                            {/* Progress indicator */}
+                            {/* Engine metaphor callout */}
+                            <div className="mb-6 p-4 rounded-lg border border-white/5 bg-white/[0.02]">
+                                <p className="text-white/30 text-[11px] leading-relaxed italic">
+                                    &quot;We amplify your vision — so you can go further, faster than ever before.&quot;
+                                </p>
+                            </div>
+
+                            {/* Progress indicator — 6 steps */}
                             <div className="pt-6 border-t border-white/5 flex items-center justify-between">
                                 <div className="flex flex-col">
                                     <span className="text-[9px] text-white/20 uppercase tracking-[0.2em] mb-1">
-                                        Process Progress
+                                        Engine Sequence
                                     </span>
                                     <div className="flex gap-1">
-                                        {PHASES.map((_, i) => (
+                                        {PHASES.map((phase, i) => (
                                             <div
                                                 key={i}
                                                 className="w-3 h-1 transition-all duration-500"
                                                 style={{
-                                                    background: i <= activePhaseIndex ? "#f49d25" : "rgba(255,255,255,0.1)",
+                                                    background: i <= activePhaseIndex ? phase.color : "rgba(255,255,255,0.1)",
                                                 }}
                                             />
                                         ))}
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-                                        {activePhaseIndex < 3 ? "Next Phase" : "Complete"}
+                                    <span
+                                        className="text-[10px] font-bold uppercase tracking-widest transition-colors duration-500"
+                                        style={{ color: activePhase.color }}
+                                    >
+                                        {activePhaseIndex < 5 ? "Next Phase" : "Mission Complete"}
                                     </span>
-                                    <span className="material-symbols-outlined text-primary">trending_flat</span>
+                                    <span className="material-symbols-outlined" style={{ color: activePhase.color }}>
+                                        {activePhaseIndex < 5 ? "trending_flat" : "check_circle"}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -418,8 +715,8 @@ export default function Engine() {
                                 />
                                 CORE_SYNC: ACTIVE
                             </span>
-                            <span>VOL_DEPTH: {(0.2 + scrollProgress * 0.682).toFixed(3)}</span>
-                            <span className="hidden md:inline">DATA_STREAM: {(2 + scrollProgress * 10.4).toFixed(1)} GB/s</span>
+                            <span>PHASE: {activePhase.number}/{PHASES.length.toString().padStart(2, '0')}</span>
+                            <span className="hidden md:inline">PWR_OUTPUT: {(15 + scrollProgress * 85).toFixed(1)}%</span>
                         </div>
                     </div>
                 </div>
@@ -428,8 +725,11 @@ export default function Engine() {
                 <div className="fixed left-4 md:left-10 top-1/2 -translate-y-1/2 space-y-4 z-30 pointer-events-none">
                     <div className="w-1 h-20 bg-white/5 rounded-full overflow-hidden relative">
                         <div
-                            className="absolute top-0 left-0 w-full bg-primary rounded-full transition-all duration-200"
-                            style={{ height: `${scrollProgress * 100}%` }}
+                            className="absolute top-0 left-0 w-full rounded-full transition-all duration-200"
+                            style={{
+                                height: `${scrollProgress * 100}%`,
+                                background: `linear-gradient(to bottom, #00ffd9, #f49d25)`,
+                            }}
                         />
                     </div>
                     <div className="flex flex-col items-center gap-6">
@@ -440,12 +740,15 @@ export default function Engine() {
                 </div>
             </div>
 
-            {/* Title overlay at top */}
+            {/* Title overlay at top — bigger font, slower dissolve */}
             <div
                 className="absolute top-20 left-0 right-0 z-20 text-center pointer-events-none"
-                style={{ opacity: Math.max(0, 1 - scrollProgress * 4) }}
+                style={{
+                    opacity: Math.max(0, 1 - scrollProgress * 2) * exitOpacity,
+                    transition: "opacity 1.2s ease-out",
+                }}
             >
-                <span className="text-primary text-[10px] font-bold tracking-[0.8em] uppercase mb-4 block">
+                <span className="text-primary text-base md:text-lg font-bold tracking-[0.8em] uppercase mb-6 block">
                     Proprietary Hyper-Core
                 </span>
                 <h3
@@ -456,17 +759,17 @@ export default function Engine() {
                 </h3>
                 <div className="w-24 h-[1px] bg-[#2dd4bf]/50 mx-auto mb-4" />
                 <p className="text-white/40 text-xs uppercase tracking-[0.4em]">
-                    Cinematic Rendering Architecture v4.0.2
+                    Your Creative Powerplant // v6.0
                 </p>
             </div>
 
-            {/* Scroll prompt — visible when not actively scrolling through section */}
+            {/* Scroll prompt */}
             <div
                 className="absolute top-[calc(100vh-60px)] left-0 right-0 text-center z-20 pointer-events-none transition-opacity duration-700"
-                style={{ opacity: scrollProgress < 0.05 ? 1 : 0 }}
+                style={{ opacity: scrollProgress < 0.05 ? exitOpacity : 0 }}
             >
                 <p className="text-white/30 text-[10px] uppercase tracking-[0.4em] font-bold animate-pulse">
-                    ◈ Scroll down to explore the process ◈
+                    ◈ Scroll down to explore the engine ◈
                 </p>
             </div>
 

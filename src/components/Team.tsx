@@ -7,6 +7,7 @@ export default function Team() {
             role: "Founder & AI Creative",
             specialization: "Specialization: AI Workflow",
             bio: "Over 20 years in film and digital media, producing for Disney, Marvel, and NBCUniversal. Currently evolving post-production with AI integration.",
+            mobileBio: "20+ years producing for Disney, Marvel & NBCUniversal.",
             image: "/adam.png",
             reelId: "adams-reels"
         },
@@ -15,6 +16,7 @@ export default function Team() {
             role: "Colorist & Compositor",
             specialization: "Master of Visual Depth",
             bio: "A passionate creative combining strategic thinking with expert execution in Color, Editorial, and VFX. Delivering exceptional digital experiences at the intersection of technology and innovation.",
+            mobileBio: "Expert in Color, Editorial & VFX at the edge of innovation.",
             image: "/Marc.png",
             reelId: "marcs-reels"
         },
@@ -23,6 +25,7 @@ export default function Team() {
             role: "Producer & Director",
             specialization: "Executive Visionary",
             bio: "Commercial and branded content producer/director with an eye for innovation, providing agile and cost-effective production solutions.",
+            mobileBio: "Branded content producer/director with agile solutions.",
             image: "/Gobi.webp",
             reelId: "gobis-reels"
         },
@@ -31,6 +34,7 @@ export default function Team() {
             role: "Sound Designer & Mixer",
             specialization: "Sonic Landscapes Specialist",
             bio: "VP of Post Production since 2007. Expert in re-recording mixing, facility design, and delivering award-winning audio under pressure for major studios.",
+            mobileBio: "VP of Post Production — award-winning audio for major studios.",
             image: "/Bob.jpg",
             reelId: null
         },
@@ -39,7 +43,8 @@ export default function Team() {
             role: "Creative Editor",
             specialization: "Narrative Architect",
             bio: "Award-winning lead video editor-producer with expertise in over 250 theatrical campaigns. Specializes in impactful storytelling for film, branding, and AI creation.",
-            image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=1000",
+            mobileBio: "250+ theatrical campaigns — storytelling for film & AI.",
+            image: "/spencer.jpg",
             reelId: "spencers-reels"
         }
     ];
@@ -56,7 +61,7 @@ export default function Team() {
     return (
         <section id="team" className="scroll-mt-48 mb-60">
             <div className="text-center mb-24">
-                <span className="text-primary text-[10px] font-bold tracking-[0.5em] uppercase mb-4 block">Meet The Visionaries</span>
+                <span className="text-primary text-[15px] font-bold tracking-[0.5em] uppercase mb-4 block">Meet The Visionaries</span>
                 <h2 className="text-5xl md:text-7xl font-black mb-8 leading-tight tracking-tighter text-glow uppercase italic">
                     THE <span className="text-primary">TEAM</span>
                 </h2>
@@ -69,25 +74,28 @@ export default function Team() {
                 {members.map((member, index) => (
                     <div
                         key={index}
-                        className="team-card group cursor-pointer"
-                        onClick={() => member.reelId && scrollToReel(member.reelId)}
+                        className="team-card group"
                     >
-                        <div className="relative overflow-hidden rounded-2xl aspect-[4/5] mb-6 bg-black/50 border border-white/10 group-hover:border-primary/50 transition-colors duration-500">
-                            {/* Image with filters */}
+                        {/* Image container — hover effects only on md+ */}
+                        <div
+                            className="relative overflow-hidden rounded-2xl aspect-[4/5] bg-black/50 border border-white/10 md:group-hover:border-primary/50 transition-colors duration-500 cursor-pointer md:cursor-pointer"
+                            onClick={() => member.reelId && scrollToReel(member.reelId)}
+                        >
+                            {/* Image with filters — grayscale hover only on desktop */}
                             <img
                                 alt={member.name}
-                                className="w-full h-full object-cover transition-all duration-700 filter grayscale contrast-125 brightness-90 group-hover:grayscale-0 group-hover:contrast-100 group-hover:brightness-100 group-hover:scale-105"
+                                className="w-full h-full object-cover transition-all duration-700 filter grayscale contrast-125 brightness-90 md:group-hover:grayscale-0 md:group-hover:contrast-100 md:group-hover:brightness-100 md:group-hover:scale-105"
                                 src={member.image}
                             />
 
-                            {/* Teal/Orange Tint Overlay - fades out on hover */}
-                            <div className="absolute inset-0 bg-gradient-to-tr from-teal-900/40 to-orange-900/40 mix-blend-overlay transition-opacity duration-700 group-hover:opacity-0"></div>
+                            {/* Teal/Orange Tint Overlay - fades out on hover (desktop only) */}
+                            <div className="absolute inset-0 bg-gradient-to-tr from-teal-900/40 to-orange-900/40 mix-blend-overlay transition-opacity duration-700 md:group-hover:opacity-0"></div>
 
                             {/* Dark gradient for text readability */}
                             <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-90 transition-opacity duration-500"></div>
 
-                            {/* Content Overlay */}
-                            <div className="absolute inset-0 p-8 flex flex-col justify-end transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                            {/* Desktop Content Overlay — hidden on mobile, hover-reveal on desktop */}
+                            <div className="absolute inset-0 p-8 hidden md:flex flex-col justify-end transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                                 <div className="space-y-3">
                                     <span className="text-primary text-[10px] font-bold tracking-[0.3em] uppercase block opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                                         {member.role}
@@ -111,6 +119,31 @@ export default function Team() {
                                     )}
                                 </div>
                             </div>
+
+                            {/* Mobile Name Overlay — only on mobile, always visible at bottom of image */}
+                            <div className="absolute bottom-0 left-0 right-0 p-5 md:hidden">
+                                <h3 className="text-2xl font-black tracking-tighter uppercase text-white">
+                                    {member.name}
+                                </h3>
+                            </div>
+                        </div>
+
+                        {/* Mobile Info — always visible below image, hidden on desktop */}
+                        <div className="md:hidden mt-4 space-y-2 px-1">
+                            <span className="text-primary text-[10px] font-bold tracking-[0.3em] uppercase block">
+                                {member.role}
+                            </span>
+                            <p className="text-white/50 text-sm leading-relaxed">
+                                {member.mobileBio}
+                            </p>
+                            {member.reelId && (
+                                <button
+                                    className="mt-2 px-5 py-2.5 border border-primary/60 text-primary text-[10px] font-bold tracking-[0.2em] uppercase rounded-lg active:bg-primary active:text-background-dark transition-all duration-300"
+                                    onClick={() => scrollToReel(member.reelId!)}
+                                >
+                                    View Work →
+                                </button>
+                            )}
                         </div>
                     </div>
                 ))}

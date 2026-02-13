@@ -259,16 +259,22 @@ export function TeamCarousels() {
     ];
 
     const spencersCreations: Video[] = [
-        { id: "s1", title: "Munchkin Bond Bottle", videoId: "placeholder", platform: 'vimeo' },
-        { id: "s2", title: "Munchkin Flow Nipple", videoId: "placeholder", platform: 'vimeo' },
-        { id: "s3", title: "Disney Aulani Resort", videoId: "placeholder", platform: 'vimeo' },
-        { id: "s4", title: "Sundeck", videoId: "placeholder", platform: 'vimeo' },
-        { id: "s5", title: "Electric Daisy Carnival", videoId: "placeholder", platform: 'vimeo' },
-        { id: "s6", title: "MasterClass: Thomas Keller", videoId: "placeholder", platform: 'vimeo' },
-        { id: "s7", title: "Nickelodeon SpongeBob", videoId: "placeholder", platform: 'vimeo' },
-        { id: "s8", title: "Sound Union Sizzle", videoId: "placeholder", platform: 'vimeo' },
-        { id: "s10", title: "The Bachelor Sneak Peak", videoId: "placeholder", platform: 'vimeo' },
-        { id: "s12", title: "10 Dates Trailer", videoId: "placeholder", platform: 'vimeo' },
+        { id: "s1", title: "Munchkin Bond Bottle", videoId: "1113449335", platform: 'vimeo' },
+        { id: "s2", title: "Flow: Bonded for Life", videoId: "1107172184", platform: 'vimeo' },
+        { id: "s3", title: "Disney Aulani Resort", videoId: "425270693", platform: 'vimeo' },
+        { id: "s4", title: "Sunteck Sizzle", videoId: "1012573755", platform: 'vimeo' },
+        { id: "s5", title: "Electric Daisy Carnival Vegas", videoId: "1006360996", platform: 'vimeo' },
+        { id: "s6", title: "MasterClass: Thomas Keller", videoId: "303119009", platform: 'vimeo' },
+        { id: "s7", title: "Nickelodeon SpongeBob", videoId: "363474145", platform: 'vimeo' },
+        { id: "s8", title: "Sound Union: Songwriters With Soldiers", videoId: "900236613", platform: 'vimeo' },
+        { id: "s9", title: "HEFP Trailer", videoId: "986577015", platform: 'vimeo' },
+        { id: "s10", title: "Surfergirl Sizzle", videoId: "355481811", platform: 'vimeo' },
+        { id: "s11", title: "The Bachelor Sneak Peek", videoId: "669926014", platform: 'vimeo' },
+        { id: "s12", title: "The Walk (Zemeckis)", videoId: "207201915", platform: 'vimeo' },
+        { id: "s13", title: "Billy Lynn's Long Halftime Walk", videoId: "203204655", platform: 'vimeo' },
+        { id: "s14", title: "Shallows International", videoId: "207200163", platform: 'vimeo' },
+        { id: "s15", title: "Meeting The Beatles In India", videoId: "447590743", platform: 'vimeo' },
+        { id: "s16", title: "Roku", videoId: "552649082", platform: 'vimeo' },
     ];
 
     const gobisWork: Video[] = [
@@ -300,8 +306,8 @@ export function TeamCarousels() {
             </div>
             <div id="spencers-reels" className="scroll-mt-24">
                 <VideoCarousel
-                    title="NARRATIVE ARCHITECT"
-                    subtitle="Narrative & Commercial"
+                    title="SPENCER HILL"
+                    subtitle="Narrative Architect"
                     videos={spencersCreations}
                 />
             </div>

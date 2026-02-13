@@ -70,12 +70,6 @@ export default function Hero() {
                 >
                     VIEW OUR REEL
                 </button>
-                <button
-                    onClick={() => document.getElementById('engine')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="glass-card px-14 py-5 rounded-sm border border-white/10 hover:bg-white/10 transition-all text-xs uppercase tracking-[0.3em]"
-                >
-                    THE ENGINE
-                </button>
             </div>
         </section>
     );

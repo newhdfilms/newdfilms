@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #f49d25;
+  --color-primary: #ff6600;
   --color-background-light: #f8f7f5;
   --color-background-dark: #12110c;
   --color-teal-depth: #0d2d2d;
@@ -24,7 +24,7 @@
 }
 
 .glow-hover:hover {
-  box-shadow: 0 0 20px rgba(244, 157, 37, 0.4);
+  box-shadow: 0 0 20px rgba(255, 102, 0, 0.4);
 }
 
 .video-bg {
@@ -47,10 +47,10 @@
 }
 
 .horizontal-scroll::-webkit-scrollbar-thumb {
-  background: #f49d25;
+  background: #ff6600;
   border-radius: 10px;
 }
 
 .text-glow {
-  text-shadow: 0 0 15px rgba(244, 157, 37, 0.3);
+  text-shadow: 0 0 15px rgba(255, 102, 0, 0.3);
 }

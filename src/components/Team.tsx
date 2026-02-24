@@ -59,7 +59,7 @@ export default function Team() {
     };
 
     return (
-        <section id="team" className="scroll-mt-48 mb-60">
+        <section id="team" className="scroll-mt-48 pt-40 mb-60">
             <div className="text-center mb-24">
                 <span className="text-primary text-[15px] font-bold tracking-[0.5em] uppercase mb-4 block">Meet The Visionaries</span>
                 <h2 className="text-5xl md:text-7xl font-black mb-8 leading-tight tracking-tighter text-glow uppercase italic">

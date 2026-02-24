@@ -9,7 +9,7 @@ const PHASES = [
         label: "IGNITION",
         subtitle: "CLIENT ACTIVATION",
         icon: "local_fire_department",
-        color: "#f49d25",
+        color: "#ff6600",
         description:
             "The moment you reach out and turn the key. You bring the vision — we bring the horsepower. This is where it all begins: your project fires up and our engine starts to roar.",
         items: [
@@ -23,7 +23,7 @@ const PHASES = [
         label: "SPARK",
         subtitle: "CREATIVE IGNITION",
         icon: "bolt",
-        color: "#f49d25",
+        color: "#ff6600",
         description:
             "The creative ideas, plans, and possibilities are shared. Proprietary LLMs stress-test concepts, generating thousands of mood-boards in seconds to find the perfect cinematic DNA.",
         items: [
@@ -65,7 +65,7 @@ const PHASES = [
         label: "DASHBOARD",
         subtitle: "REVIEW & CONTROL",
         icon: "dashboard",
-        color: "#f49d25",
+        color: "#ff6600",
         description:
             "The dashboard lights up — clients and teams review as gears shift into drive. If the wrong lights flash, we address it. Every indicator green means clear for launch.",
         items: [
@@ -79,7 +79,7 @@ const PHASES = [
         label: "LAUNCH",
         subtitle: "DEPLOYMENT",
         icon: "rocket_launch",
-        color: "#f49d25",
+        color: "#ff6600",
         description:
             "All systems go. The project launches across spatial computing, streaming platforms, and screens worldwide. You're in the driver's seat — we built the engine that gets you there faster than ever before.",
         items: [
@@ -393,7 +393,7 @@ export default function Engine() {
                 <div
                     className="absolute -bottom-1/4 -right-1/4 w-full h-full transition-opacity duration-1000"
                     style={{
-                        background: "radial-gradient(circle at center, rgba(244, 157, 37, 0.12) 0%, transparent 70%)",
+                        background: "radial-gradient(circle at center, rgba(255, 102, 0, 0.12) 0%, transparent 70%)",
                         filter: "blur(40px)",
                         opacity: 0.3 + scrollProgress * 0.7,
                     }}
@@ -420,8 +420,8 @@ export default function Engine() {
                             width: 2 + enginePower * 2,
                             height: 2 + enginePower * 2,
                             borderRadius: "50%",
-                            background: i % 2 === 0 ? "#00ffd9" : "#f49d25",
-                            boxShadow: `0 0 ${6 + enginePower * 10}px ${i % 2 === 0 ? "#00ffd9" : "#f49d25"}`,
+                            background: i % 2 === 0 ? "#00ffd9" : "#ff6600",
+                            boxShadow: `0 0 ${6 + enginePower * 10}px ${i % 2 === 0 ? "#00ffd9" : "#ff6600"}`,
                             opacity: p.opacity * scrollProgress,
                             transition: "opacity 0.5s",
                         }}
@@ -486,7 +486,7 @@ export default function Engine() {
                                     <div
                                         className="absolute inset-0"
                                         style={{
-                                            background: `linear-gradient(135deg, rgba(0, 255, 217, ${0.05 + corePulse * 0.15}) 0%, rgba(244, 157, 37, ${0.05 + corePulse * 0.15}) 100%)`,
+                                            background: `linear-gradient(135deg, rgba(0, 255, 217, ${0.05 + corePulse * 0.15}) 0%, rgba(255, 102, 0, ${0.05 + corePulse * 0.15}) 100%)`,
                                             transition: "background 0.5s ease",
                                         }}
                                     />
@@ -506,8 +506,8 @@ export default function Engine() {
                                                 background: "linear-gradient(to top, black, #27272a)",
                                                 border: "1px solid rgba(255,255,255,0.05)",
                                                 boxShadow: coreGlow
-                                                    ? `0 0 ${40 + scrollProgress * 80}px ${10 + scrollProgress * 20}px rgba(244, 157, 37, ${0.2 + scrollProgress * 0.4}), inset 0 0 30px rgba(255,255,255,0.3)`
-                                                    : "0 0 20px 5px rgba(244, 157, 37, 0.1), inset 0 0 30px rgba(255,255,255,0.2)",
+                                                    ? `0 0 ${40 + scrollProgress * 80}px ${10 + scrollProgress * 20}px rgba(255, 102, 0, ${0.2 + scrollProgress * 0.4}), inset 0 0 30px rgba(255,255,255,0.3)`
+                                                    : "0 0 20px 5px rgba(255, 102, 0, 0.1), inset 0 0 30px rgba(255,255,255,0.2)",
                                                 transition: "box-shadow 0.6s ease",
                                             }}
                                         >
@@ -728,7 +728,7 @@ export default function Engine() {
                             className="absolute top-0 left-0 w-full rounded-full transition-all duration-200"
                             style={{
                                 height: `${scrollProgress * 100}%`,
-                                background: `linear-gradient(to bottom, #00ffd9, #f49d25)`,
+                                background: `linear-gradient(to bottom, #00ffd9, #ff6600)`,
                             }}
                         />
                     </div>
@@ -753,7 +753,7 @@ export default function Engine() {
                 </span>
                 <h3
                     className="text-6xl md:text-8xl font-bold tracking-tighter mb-4"
-                    style={{ textShadow: "0 0 15px rgba(244, 157, 37, 0.4)" }}
+                    style={{ textShadow: "0 0 15px rgba(255, 102, 0, 0.4)" }}
                 >
                     THE ENGINE
                 </h3>

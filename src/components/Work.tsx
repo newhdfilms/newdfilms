@@ -224,7 +224,7 @@ export function AiCreationsCarousel() {
     ];
 
     return (
-        <section id="work" className="scroll-mt-48 mb-24">
+        <section id="work" className="scroll-mt-48 pt-40 mb-24">
             <VideoCarousel
                 title="SYNTHETIC PRODUCTIONS"
                 subtitle="AI Creations"
